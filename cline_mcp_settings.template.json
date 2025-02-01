@@ -1,0 +1,115 @@
+{
+  "mcpServers": {
+    "mcp-git-ingest": {
+      "command": "${VENV_PATH}/mcp-git-ingest/.venv/bin/python",
+      "args": [
+        "-m",
+        "mcp_git_ingest.main"
+      ],
+      "env": {
+        "PATH": "${VENV_PATH}/mcp-git-ingest/.venv/bin:/usr/bin:/bin",
+        "PYTHONPATH": "${PROJECT_PATH}/mcp-git-ingest/src"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "git_directory_structure",
+        "git_read_important_files"
+      ]
+    },
+    "github_api": {
+      "command": "${ASDF_PATH}/shims/npx",
+      "env": {
+        "PATH": "${ASDF_PATH}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}",
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "perplexity-server": {
+      "command": "node",
+      "args": [
+        "${PROJECT_PATH}/perplexity-server/build/index.js"
+      ],
+      "env": {
+        "PATH": "${ASDF_PATH}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "search",
+        "get_documentation",
+        "find_apis",
+        "check_deprecated_code"
+      ]
+    },
+    "tavily": {
+      "command": "${PYENV_PATH}/python",
+      "args": [
+        "-m",
+        "mcp_server_tavily"
+      ],
+      "env": {
+        "TAVILY_API_KEY": "${TAVILY_API_KEY}"
+      },
+      "autoApprove": [
+        "tavily_web_search",
+        "tavily_answer_search",
+        "tavily_news_search"
+      ]
+    },
+    "git": {
+      "command": "${PYENV_PATH}/python",
+      "args": [
+        "-m",
+        "mcp_server_git"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "autoApprove": [
+        "git_status",
+        "git_diff_unstaged",
+        "git_diff_staged",
+        "git_log"
+      ]
+    },
+    "@modelcontextprotocol-server-sequential-thinking": {
+      "command": "${ASDF_PATH}/shims/npx",
+      "env": {
+        "PATH": "${ASDF_PATH}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}"
+      },
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "autoApprove": [
+        "sequentialthinking"
+      ]
+    },
+    "read-pdf": {
+      "command": "${PYENV_PATH}/python",
+      "args": [
+        "-m",
+        "mcp_server_pdf"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "process_pdf_file",
+        "process_pdf_url"
+      ]
+    }
+  }
+}
