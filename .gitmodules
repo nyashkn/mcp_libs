@@ -1,0 +1,9 @@
+[submodule "mcp-git-ingest"]
+	path = mcp-git-ingest
+	url = git@github.com:adhikasp/mcp-git-ingest.git
+[submodule "mcp-tavily"]
+	path = mcp-tavily
+	url = https://github.com/RamXX/mcp-tavily.git
+[submodule "perplexity-server"]
+	path = perplexity-server
+	url = https://github.com/DaInfernalCoder/researcher-mcp.git
