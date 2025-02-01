@@ -1,0 +1,19 @@
+[project]
+name = "mcp-server-pdf"
+version = "0.1.0"
+description = "MCP server for PDF processing using PyMuPDF4LLM"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "pymupdf4llm",
+    "requests>=2.31.0",
+    "pydantic>=2.10.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+mcp-server-pdf = "mcp_server_pdf.__main__:main"
