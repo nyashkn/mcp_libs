@@ -1,0 +1,243 @@
+# MCP Server Development Guidelines
+
+## Core Principles
+
+### 1. MCP Server Design
+**Principle:** Each MCP server should be focused, maintainable, and follow the MCP protocol standards.
+
+**Guidelines:**
+- One primary functionality per MCP server
+- Clear separation between tools and resources
+- Proper error handling and logging
+- Consistent response formats
+
+**Examples:**
+✅ Good:
+```python
+@mcp.tool()
+def process_document(content: str) -> dict:
+    try:
+        result = process_content(content)
+        return {
+            "status": "success",
+            "data": result
+        }
+    except ProcessingError as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+```
+
+❌ Bad:
+```python
+@mcp.tool()
+def do_everything(content: str) -> Any:
+    # Mixed responsibilities
+    process_content(content)
+    save_to_db(content)
+    notify_user()
+    return "done"
+```
+
+### 2. Configuration Management
+**Principle:** All configuration should be environment-based and secure.
+
+**Guidelines:**
+- Use environment variables for all configuration
+- Never hardcode sensitive data
+- Provide template files for all configs
+- Document all configuration options
+
+**Examples:**
+✅ Good:
+```python
+class Config:
+    API_KEY = os.environ.get("SERVICE_API_KEY")
+    ENDPOINT = os.environ.get("SERVICE_ENDPOINT")
+    
+    @classmethod
+    def validate(cls):
+        if not cls.API_KEY:
+            raise ConfigError("SERVICE_API_KEY must be set")
+```
+
+❌ Bad:
+```python
+API_KEY = "1234567890abcdef"  # Hardcoded secrets
+ENDPOINT = "https://prod.api.com"  # Environment-specific value
+```
+
+### 3. Tool and Resource Design
+**Principle:** Tools and resources should be well-defined, documented, and follow consistent patterns.
+
+**Guidelines:**
+- Clear input/output schemas
+- Comprehensive error handling
+- Proper validation
+- Detailed documentation
+
+**Examples:**
+✅ Good:
+```python
+@mcp.tool()
+def analyze_text(
+    text: str,
+    options: Optional[Dict[str, Any]] = None
+) -> AnalysisResult:
+    """Analyze text content with optional parameters.
+    
+    Args:
+        text: The text content to analyze
+        options: Optional configuration parameters
+        
+    Returns:
+        AnalysisResult containing the analysis data
+        
+    Raises:
+        ValidationError: If text is empty
+        AnalysisError: If analysis fails
+    """
+    if not text.strip():
+        raise ValidationError("Text cannot be empty")
+    return perform_analysis(text, options)
+```
+
+❌ Bad:
+```python
+@mcp.tool()
+def analyze(data):
+    # No type hints
+    # No documentation
+    # No validation
+    return do_analysis(data)
+```
+
+### 4. Error Handling
+**Principle:** Errors should be informative and properly propagated.
+
+**Guidelines:**
+- Use custom exception types
+- Include context in error messages
+- Handle both expected and unexpected errors
+- Maintain proper error hierarchies
+
+**Examples:**
+✅ Good:
+```python
+class MCPError(Exception):
+    """Base error for MCP operations."""
+    pass
+
+class ValidationError(MCPError):
+    """Validation-specific errors."""
+    pass
+
+def validate_input(data: Dict[str, Any]) -> None:
+    if not data.get("required_field"):
+        raise ValidationError(
+            "required_field is missing",
+            field="required_field"
+        )
+```
+
+❌ Bad:
+```python
+def validate(data):
+    if not data["field"]:  # Could raise KeyError
+        return False  # Silent failure
+```
+
+## Implementation Checklist
+
+### Setup and Configuration
+- [ ] Environment variables documented in .env.example
+- [ ] Configuration validation implemented
+- [ ] Sensitive data properly secured
+- [ ] Template files provided
+
+### Code Quality
+- [ ] Type hints used consistently
+- [ ] Documentation strings present
+- [ ] Tests implemented
+- [ ] Error handling complete
+- [ ] Input validation thorough
+
+### MCP Protocol
+- [ ] Tools properly defined
+- [ ] Resources properly structured
+- [ ] Error responses standardized
+- [ ] Schema validation implemented
+
+## Security Guidelines
+
+### Sensitive Data
+- NEVER commit .env files
+- NEVER include API keys in code
+- NEVER log sensitive information
+- ALWAYS use environment variables for secrets
+
+### API Security
+- Validate all inputs
+- Sanitize all outputs
+- Rate limit where appropriate
+- Use secure communication
+
+## Testing Requirements
+
+### Unit Tests
+- Test each tool independently
+- Test error conditions
+- Test edge cases
+- Mock external dependencies
+
+### Integration Tests
+- Test MCP protocol compliance
+- Test configuration loading
+- Test error propagation
+- Test real-world scenarios
+
+## Documentation Requirements
+
+### Code Documentation
+- Clear docstrings
+- Type hints
+- Usage examples
+- Error descriptions
+
+### Tool/Resource Documentation
+- Input/output schemas
+- Example usage
+- Error scenarios
+- Configuration options
+
+## Best Practices
+
+### Code Organization
+- Group related functionality
+- Separate concerns
+- Use consistent naming
+- Follow language conventions
+
+### Performance
+- Consider memory usage
+- Handle large inputs gracefully
+- Cache where appropriate
+- Profile critical paths
+
+### Maintenance
+- Keep dependencies updated
+- Monitor error rates
+- Track usage patterns
+- Document changes
+
+## Review Checklist
+
+Before submitting changes:
+- [ ] All tests pass
+- [ ] Documentation updated
+- [ ] No sensitive data exposed
+- [ ] Error handling complete
+- [ ] Input validation thorough
+- [ ] Performance implications considered
+- [ ] Security implications reviewed
