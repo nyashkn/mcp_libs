@@ -6,22 +6,23 @@ A collection of Model Context Protocol (MCP) servers with centralized configurat
 
 ```
 MCP/
-├── cline_mcp_settings.template.json  # Template for all MCP servers
-├── .env.example                      # Example environment variables
-├── generate_settings.sh              # Script to generate settings files
-├── MCP_SETTINGS_SETUP.md            # Settings management documentation
-├── GIT_SETUP.md                     # Git submodules documentation
+├── Configuration
+│   ├── cline_mcp_settings.template.json  # Template for all MCP servers
+│   ├── .env.example                      # Example environment variables
+│   ├── generate_settings.sh              # Script to generate settings files
+│   ├── MCP_SETTINGS_SETUP.md            # Settings management documentation
+│   └── GIT_SETUP.md                     # Git submodules documentation
 │
-├── Submodules (Git-managed):
-│   ├── mcp-git-ingest/             # GitHub repository analysis tools
-│   ├── mcp-tavily/                 # Tavily search integration
-│   └── perplexity-server/          # Perplexity API integration
+├── External MCP Servers (Git Submodules)
+│   ├── mcp-git-ingest/                  # GitHub repository analysis tools
+│   ├── mcp-tavily/                      # Tavily search integration
+│   └── perplexity-server/               # Perplexity API integration
 │
-└── Other MCP Servers (Local):
-    ├── github-mcp/                 # GitHub API integration
-    ├── mcp-pdf/                    # PDF processing tools
-    ├── mcp-postgres/               # PostgreSQL integration
-    └── mcp-server-github/          # Additional GitHub tools
+└── Local MCP Servers
+    ├── github-mcp/                      # GitHub API integration
+    ├── mcp-pdf/                         # PDF processing tools
+    ├── mcp-postgres/                    # PostgreSQL integration
+    └── mcp-server-github/               # Additional GitHub tools
 ```
 
 ## Setup
@@ -48,9 +49,9 @@ chmod +x generate_settings.sh
 - [MCP Settings Setup](MCP_SETTINGS_SETUP.md) - How to manage MCP settings
 - [Git Setup](GIT_SETUP.md) - Working with Git submodules
 
-## Submodules
+## External MCP Servers (Submodules)
 
-Currently managed as Git submodules:
+These servers are maintained in their own repositories and included as Git submodules:
 
 1. mcp-git-ingest
    - Source: https://github.com/adhikasp/mcp-git-ingest
@@ -64,14 +65,57 @@ Currently managed as Git submodules:
    - Source: https://github.com/DaInfernalCoder/researcher-mcp
    - Purpose: Perplexity API integration
 
+### Updating Submodules
+
+```bash
+# Update all submodules
+git submodule update --remote --merge
+
+# Update specific submodule
+cd [submodule-directory]
+git pull origin main
+cd ..
+git add [submodule-directory]
+git commit -m "Update [submodule-name]"
+```
+
 ## Local MCP Servers
 
-These servers are currently managed locally:
+These servers are developed and maintained within this repository:
 
-- github-mcp: GitHub API integration
-- mcp-pdf: PDF processing tools
-- mcp-postgres: PostgreSQL integration
-- mcp-server-github: Additional GitHub tools
+1. github-mcp
+   - Purpose: GitHub API integration
+   - Stack: Node.js
+
+2. mcp-pdf
+   - Purpose: PDF processing tools
+   - Stack: Python
+
+3. mcp-postgres
+   - Purpose: PostgreSQL integration
+   - Stack: Python
+
+4. mcp-server-github
+   - Purpose: Additional GitHub tools
+   - Stack: Python
+
+### Managing Local Servers
+
+- Make changes directly in their directories
+- Commit changes to the main repository
+- Consider converting to standalone repositories and submodules when they mature
+
+## Development Workflow
+
+### For Submodules
+1. Create feature branches in submodule repositories
+2. Submit PRs to their respective repositories
+3. Update submodule references after changes are merged
+
+### For Local Servers
+1. Make changes directly in their directories
+2. Test changes locally
+3. Commit to the main repository
 
 ## Contributing
 
@@ -81,8 +125,10 @@ These servers are currently managed locally:
 
 2. For local servers:
    - Make changes directly in their directories
-   - Consider converting to submodules if they become standalone projects
+   - Follow the repository's coding standards
+   - Include tests for new features
 
 ## License
 
-Each MCP server maintains its own license. Please refer to individual server directories for their respective licenses.
+- External MCP servers (submodules) maintain their own licenses
+- Local MCP servers are licensed under this repository's license
