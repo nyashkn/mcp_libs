@@ -71,3 +71,4 @@ logs/
 # Keep these template files
 !cline_mcp_settings.template.json
 !.env.example
+local_files
