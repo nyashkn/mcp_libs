@@ -1,14 +1,60 @@
 {
   "mcpServers": {
-    "mcp-git-ingest": {
-      "command": "${VENV_PATH}/mcp-git-ingest/.venv/bin/python",
+    "mdundo_pg_anlytics": {
+      "command": "${ASDF_DATA_DIR}/shims/uv",
       "args": [
+        "--directory",
+        "${PROJECT_PATH}/mcp-alchemy",
+        "run",
         "-m",
-        "mcp_git_ingest.main"
+        "mcp_alchemy"
       ],
       "env": {
-        "PATH": "${VENV_PATH}/mcp-git-ingest/.venv/bin:/usr/bin:/bin",
-        "PYTHONPATH": "${PROJECT_PATH}/mcp-git-ingest/src"
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_UV_VERSION": "${UV_VERSION}",
+        "CLAUDE_LOCAL_FILES_PATH": "${PROJECT_PATH}/local_files",
+        "DB_URL": "${DB_URL}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "execute_query"
+      ],
+      "timeout": 900,
+      "alwaysAllow": [
+        "execute_query",
+        "schema_definitions"
+      ]
+    },
+    "markdownify-mcp": {
+      "command": "${ASDF_DATA_DIR}/shims/node",
+      "args": [
+        "${PROJECT_PATH}/markdownify-mcp/dist/index.js"
+      ],
+      "env": {
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "mcp-git-ingest": {
+      "command": "${ASDF_DATA_DIR}/shims/uv",
+      "args": [
+        "--directory",
+        "${PROJECT_PATH}/mcp-git-ingest",
+        "run",
+        "-m",
+        "mcp_git_ingest"
+      ],
+      "env": {
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_UV_VERSION": "${UV_VERSION}"
       },
       "disabled": false,
       "autoApprove": [
@@ -16,29 +62,13 @@
         "git_read_important_files"
       ]
     },
-    "github_api": {
-      "command": "${ASDF_PATH}/shims/npx",
-      "env": {
-        "PATH": "${ASDF_PATH}/shims:/usr/bin:/bin",
-        "ASDF_DIR": "${ASDF_DIR}",
-        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
-        "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}",
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
-      },
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "disabled": false,
-      "autoApprove": []
-    },
     "perplexity-server": {
       "command": "node",
       "args": [
         "${PROJECT_PATH}/perplexity-server/build/index.js"
       ],
       "env": {
-        "PATH": "${ASDF_PATH}/shims:/usr/bin:/bin",
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
         "ASDF_DIR": "${ASDF_DIR}",
         "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
         "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}",
@@ -49,7 +79,8 @@
         "search",
         "get_documentation",
         "find_apis",
-        "check_deprecated_code"
+        "check_deprecated_code",
+        "chat_perplexity"
       ]
     },
     "tavily": {
@@ -67,26 +98,10 @@
         "tavily_news_search"
       ]
     },
-    "git": {
-      "command": "${PYENV_PATH}/python",
-      "args": [
-        "-m",
-        "mcp_server_git"
-      ],
-      "env": {
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
-      },
-      "autoApprove": [
-        "git_status",
-        "git_diff_unstaged",
-        "git_diff_staged",
-        "git_log"
-      ]
-    },
     "@modelcontextprotocol-server-sequential-thinking": {
-      "command": "${ASDF_PATH}/shims/npx",
+      "command": "${ASDF_DATA_DIR}/shims/npx",
       "env": {
-        "PATH": "${ASDF_PATH}/shims:/usr/bin:/bin",
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
         "ASDF_DIR": "${ASDF_DIR}",
         "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
         "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}"
@@ -109,6 +124,23 @@
       "autoApprove": [
         "process_pdf_file",
         "process_pdf_url"
+      ]
+    },
+    "e2b": {
+      "command": "${ASDF_DATA_DIR}/shims/node",
+      "args": [
+        "${PROJECT_PATH}/e2b-mcp/build/index.js"
+      ],
+      "env": {
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}",
+        "E2B_API_KEY": "${E2B_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "execute_code"
       ]
     }
   }
