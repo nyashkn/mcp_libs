@@ -138,7 +138,7 @@
         "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}",
         "E2B_API_KEY": "${E2B_API_KEY}"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "execute_code"
       ]
