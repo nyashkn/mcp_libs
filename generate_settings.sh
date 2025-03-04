@@ -31,6 +31,7 @@ validate_env() {
         "TAVILY_API_KEY"
         "VSCODE_SETTINGS_PATH_1"
         "VSCODE_SETTINGS_PATH_2"
+        "CLAUDE_DESKTOP_CONFIG_PATH"
     )
     
     for var in "${required_vars[@]}"; do
@@ -53,7 +54,7 @@ validate_env() {
 backup_settings() {
     mkdir -p "$BACKUP_DIR"
     
-    for settings_path in "$VSCODE_SETTINGS_PATH_1" "$VSCODE_SETTINGS_PATH_2"; do
+    for settings_path in "$VSCODE_SETTINGS_PATH_1" "$VSCODE_SETTINGS_PATH_2" "$CLAUDE_DESKTOP_CONFIG_PATH"; do
         if [ -f "$settings_path" ]; then
             backup_file="$BACKUP_DIR/$(basename "$settings_path")_$TIMESTAMP.bak"
             cp "$settings_path" "$backup_file"
@@ -130,30 +131,34 @@ fi
 # Create the settings directories if they don't exist
 mkdir -p "$(dirname "$VSCODE_SETTINGS_PATH_1")"
 mkdir -p "$(dirname "$VSCODE_SETTINGS_PATH_2")"
+mkdir -p "$(dirname "$CLAUDE_DESKTOP_CONFIG_PATH")"
 
 # Generate the settings files using envsubst
 echo "Generating settings files..."
 envsubst < cline_mcp_settings.template.json > "$VSCODE_SETTINGS_PATH_1"
 envsubst < cline_mcp_settings.template.json > "$VSCODE_SETTINGS_PATH_2"
+envsubst < cline_mcp_settings.template.json > "$CLAUDE_DESKTOP_CONFIG_PATH"
 
 # Set proper permissions
 chmod 600 "$VSCODE_SETTINGS_PATH_1"
 chmod 600 "$VSCODE_SETTINGS_PATH_2"
+chmod 600 "$CLAUDE_DESKTOP_CONFIG_PATH"
 
 echo "MCP settings files generated successfully:"
 echo "1. $VSCODE_SETTINGS_PATH_1"
 echo "2. $VSCODE_SETTINGS_PATH_2"
+echo "3. $CLAUDE_DESKTOP_CONFIG_PATH"
 
 # Verify the files exist and have content
-if [ -s "$VSCODE_SETTINGS_PATH_1" ] && [ -s "$VSCODE_SETTINGS_PATH_2" ]; then
+if [ -s "$VSCODE_SETTINGS_PATH_1" ] && [ -s "$VSCODE_SETTINGS_PATH_2" ] && [ -s "$CLAUDE_DESKTOP_CONFIG_PATH" ]; then
     # Validate generated JSON files
-    if validate_json "$VSCODE_SETTINGS_PATH_1" && validate_json "$VSCODE_SETTINGS_PATH_2"; then
+    if validate_json "$VSCODE_SETTINGS_PATH_1" && validate_json "$VSCODE_SETTINGS_PATH_2" && validate_json "$CLAUDE_DESKTOP_CONFIG_PATH"; then
         echo "✅ Settings files created and validated successfully"
     else
         echo "⚠️  Warning: Generated files contain invalid JSON"
         exit 1
     fi
 else
-    echo "⚠️  Warning: One or both settings files may be empty"
+    echo "⚠️  Warning: One or more settings files may be empty"
     exit 1
 fi

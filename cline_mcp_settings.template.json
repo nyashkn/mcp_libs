@@ -129,7 +129,7 @@
     "e2b": {
       "command": "${ASDF_DATA_DIR}/shims/node",
       "args": [
-        "${PROJECT_PATH}/e2b-mcp/build/index.js"
+        "${PROJECT_PATH}/e2b-mcp/packages/js/build/index.js"
       ],
       "env": {
         "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
@@ -142,6 +142,31 @@
       "autoApprove": [
         "execute_code"
       ]
+    },
+    "pg_qhala_cema": {
+      "command": "${ASDF_DATA_DIR}/shims/uv",
+      "args": [
+        "--directory",
+        "${PROJECT_PATH}/mcp-alchemy",
+        "run",
+        "-m",
+        "mcp_alchemy"
+      ],
+      "env": {
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_UV_VERSION": "${UV_VERSION}",
+        "CLAUDE_LOCAL_FILES_PATH": "${PROJECT_PATH}/local_files",
+        "DB_URL": "${CEMA_DB_URL}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "execute_query",
+        "all_table_names",
+        "schema_definitions"
+      ],
+      "timeout": 900
     }
   }
 }
