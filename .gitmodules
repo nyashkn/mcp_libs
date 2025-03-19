@@ -16,3 +16,6 @@
 [submodule "e2b-mcp"]
 	path = e2b-mcp
 	url = https://github.com/e2b-dev/mcp-server.git
+[submodule "code-sandbox-mcp"]
+	path = code-sandbox-mcp
+	url = https://github.com/Automata-Labs-team/code-sandbox-mcp.git
