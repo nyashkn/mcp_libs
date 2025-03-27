@@ -19,3 +19,6 @@
 [submodule "code-sandbox-mcp"]
 	path = code-sandbox-mcp
 	url = https://github.com/nyashkn/code-sandbox-mcp.git
+[submodule "firecrawl-mcp-server"]
+	path = firecrawl-mcp-server
+	url = https://github.com/mendableai/firecrawl-mcp-server.git

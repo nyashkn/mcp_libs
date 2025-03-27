@@ -1,13 +1,14 @@
 # MCP Server Collection Management
 
-.PHONY: help setup generate-settings backup-settings validate check-env install-deps
+.PHONY: help setup generate-settings backup-settings backup-only validate check-env install-deps
 
 help:
 	@echo "MCP Server Collection Management Commands:"
 	@echo "make setup              - Initial setup (clone submodules, create env)"
 	@echo "make generate-settings  - Generate MCP settings files"
-	@echo "make backup-settings    - Backup current settings"
+	@echo "make backup-settings    - Backup current settings before generating new ones"
 	@echo "make validate          - Validate environment and settings"
+	@echo "make backup-only       - Only backup current settings without generating new ones"
 	@echo "make check-env         - Check environment variables"
 	@echo "make install-deps      - Install dependencies (envsubst, etc.)"
 
@@ -22,6 +23,9 @@ generate-settings: check-env validate
 
 backup-settings:
 	./generate_settings.sh --backup
+
+backup-only:
+	./generate_settings.sh --backup-only
 
 validate:
 	./generate_settings.sh --validate

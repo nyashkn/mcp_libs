@@ -9,8 +9,9 @@ usage() {
     echo "Usage: $0 [--backup|--validate]"
     echo
     echo "Options:"
-    echo "  --backup    Create backup of existing settings before generating new ones"
-    echo "  --validate  Only validate environment and settings without making changes"
+    echo "  --backup       Create backup of existing settings before generating new ones"
+    echo "  --backup-only  Only backup existing settings without generating new ones"
+    echo "  --validate     Only validate environment and settings without making changes"
     exit 1
 }
 
@@ -77,6 +78,7 @@ validate_json() {
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --backup) DO_BACKUP=1 ;;
+        --backup-only) DO_BACKUP=1; BACKUP_ONLY=1 ;;
         --validate) VALIDATE_ONLY=1 ;;
         --help) usage ;;
         *) echo "Unknown parameter: $1"; usage ;;
@@ -120,6 +122,12 @@ fi
 # Exit if only validating
 if [ -n "$VALIDATE_ONLY" ]; then
     echo "✅ All validations passed"
+    exit 0
+fi
+
+# Exit if only backing up
+if [ -n "$BACKUP_ONLY" ]; then
+    backup_settings
     exit 0
 fi
 
