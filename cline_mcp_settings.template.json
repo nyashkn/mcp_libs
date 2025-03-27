@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "mdundo_pg_anlytics": {
+    "mdundo_pg_analytics": {
       "command": "${ASDF_DATA_DIR}/shims/uv",
       "args": [
         "--directory",
@@ -26,6 +26,55 @@
         "execute_query",
         "schema_definitions"
       ]
+    },
+    "mcp-server-firecrawl": {
+      "command": "${ASDF_DATA_DIR}/shims/npx",
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
+      "env": {
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}",
+        "ASDF_NODEJS_VERSION": "${NODEJS_VERSION}",
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}",
+        "FIRECRAWL_RETRY_MAX_ATTEMPTS": "${FIRECRAWL_RETRY_MAX_ATTEMPTS}",
+        "FIRECRAWL_RETRY_INITIAL_DELAY": "${FIRECRAWL_RETRY_INITIAL_DELAY}",
+        "FIRECRAWL_RETRY_MAX_DELAY": "${FIRECRAWL_RETRY_MAX_DELAY}",
+        "FIRECRAWL_RETRY_BACKOFF_FACTOR": "${FIRECRAWL_RETRY_BACKOFF_FACTOR}",
+        "FIRECRAWL_CREDIT_WARNING_THRESHOLD": "${FIRECRAWL_CREDIT_WARNING_THRESHOLD}",
+        "FIRECRAWL_CREDIT_CRITICAL_THRESHOLD": "${FIRECRAWL_CREDIT_CRITICAL_THRESHOLD}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "firecrawl_scrape",
+        "firecrawl_map",
+        "firecrawl_crawl",
+        "firecrawl_batch_scrape",
+        "firecrawl_check_batch_status",
+        "firecrawl_check_crawl_status",
+        "firecrawl_search",
+        "firecrawl_extract",
+        "firecrawl_deep_research",
+        "firecrawl_generate_llmstxt"
+      ]
+    },
+    "code-sandbox-mcp": {
+      "command": "${PROJECT_PATH}/code-sandbox-mcp/bin/code-sandbox-mcp-darwin-arm64",
+      "args": [],
+      "env": {
+        "PATH": "${ASDF_DATA_DIR}/shims:/usr/bin:/bin",
+        "ASDF_DIR": "${ASDF_DIR}",
+        "DEBUG": "true",
+        "LOG_LEVEL": "debug",
+        "MCP_DEBUG": "true",
+        "ARTIFACTS_DIR": "${PROJECT_PATH}/local_files/code-sandbox-mcp/artifacts",
+        "ASDF_DATA_DIR": "${ASDF_DATA_DIR}"
+      },
+      "disabled": false,
+      "autoApprove": ["run_code", "run_project"],
+      "timeout": 300
     },
     "markdownify-mcp": {
       "command": "${ASDF_DATA_DIR}/shims/node",
